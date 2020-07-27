@@ -1,0 +1,51 @@
+<section class="jumbotron text-center" style="background:transparent !important">
+  <div class="container">
+    <h2>Insert text to search at Youtube or in our database</h2>
+    <div class="form-inline justify-content-center">
+        <input type="text" class="form-control mr-2" placeholder="Search" 
+          [(ngModel)]="searchText"
+          name="searchText">
+        <select class="form-control mr-2" [(ngModel)]="searchOptionId">
+          <option *ngFor="let searchOption of searchOptions" value={{searchOption.id}}>
+            {{searchOption.name}}
+          </option>
+        </select>
+        <button type="button" class="btn btn-sm btn-primary" tooltip="Search" (click)="searchVideos()">
+          <i class="fa fa-search"></i>
+        </button>
+    </div>
+  </div>
+</section>
+
+<div class="album py-5 bg-light">
+  <div class="container">
+    <div class="row search-results" *ngIf="videos && videos.length"
+      infinite-scroll
+      [infiniteScrollDistance]="1"
+      [infiniteScrollThrottle]="8"
+      (scrolled)="onScroll()">
+      <div class="col-md-4" *ngFor="let video of videos">
+        <div class="card mb-4 shadow-sm">
+          <video [id]="video.id" class="video-js vjs-default-skin vjs-big-play-centered mini-play"
+                width="320" height="180" poster={{video.thumbnail}} style="margin: auto;"
+                preload="metadata" controls techOrder="html5">
+            <source type="video/youtube" src="https://www.youtube.com/watch?v={{video.id}}"/>
+          </video>
+          <div class="card-body">
+            <p class="card-text">{{video.title}}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-success mr-1" tooltip="Save" (click)="saveVideo(video)">
+                  <i class="fa fa-plus-circle"></i>
+                </button>
+                <button type="button" class="btn btn-sm btn-danger" tooltip="Remove" (click)="removeVideo(video)">
+                  <i class="fa fa-eraser"></i>
+                </button>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
